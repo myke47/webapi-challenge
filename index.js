@@ -1,3 +1,11 @@
+const server = require('./server');
+
+const port = process.env.port || 5705
+
+server.listen(port, () => {
+  console.log('Port 5705 is now in use')
+})
+
 /*
 play this: https://www.youtube.com/watch?v=d-diB65scQU
 
