@@ -1,16 +1,30 @@
 const express = require('express');
+
+const projectRouter = require("./routers/projectRouter.js");
+const actionRouter = require("./routers/actionRouter.js");
 const server = express();
 
-const actionRouter = require('./actionRouter');
-const projectRouter = require('./projectRouter');
-
 server.use(express.json());
+server.use(logger);
 
-server.use('/api/actions', actionRouter);
 server.use('/api/projects', projectRouter);
+server.use('/api/actions', actionRouter);
 
+const greeting = process.env.Greeting;
+console.log('greeting');
 server.get("/", (req, res) => {
-  res.send("TODO EDIT WHEN THIS CONFIRMS")
-})
+  res.send(`<p>${greeting}</p>`)
+});
 
-module.export = server;
+server.use(errHandler);
+
+function errHandler(err, req, res, next) {
+  res.status(err.status).json({ message: err.message });
+}
+
+function logger(req, res, next) {
+  console.log(`[${new Date().toISOString()}] ${req.method} to ${req.url}`);
+  next();
+}
+
+module.exports = server;
